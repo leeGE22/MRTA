@@ -1,0 +1,55 @@
+Robot ID: 1
+Robot Name: ROAIGN "MyBom Cuty"
+Robot Type: Social Robot
+Robot Size: 25 × 15 × 15 cm
+Robot Capabilities:
+- It can converse with people.
+- It can express emotions.
+- It can perform social interactions.
+
+
+Robot ID: 2
+Robot Name: ROBOTIS "GAEMI"
+Robot Type: Mobile Robot
+Robot Size: 73 × 55 × 73.3 cm
+Robot Capabilities:
+- It can move at a maximum speed of 2 m/s.
+- It can carry loads up to 70 kg.
+
+
+Robot ID: 3
+Robot Name: DOOSAN Robotics "H2515"
+Robot Type: Manipulator
+Robot Size: 184.5 × 25 × 54 cm
+Robot Capabilities:
+- It can lift objects up to 25 kg.
+- It can move objects up to 1.5 m.
+- It can place objects.
+
+
+Robot ID: 4
+Robot Name: Boston Dynamics "Spot"
+Robot Type: 4-legged Robot
+Robot Size: 61 × 11 × 50 cm
+Robot Capabilities:
+- It can move at a maximum speed of 1.6 m/s.
+- It can traverse rough terrain.
+- It can lift objects up to 11 kg.
+- It can transport objects.
+- It can place objects.
+- It can see.
+
+
+Robot ID: 5
+Robot Name: UNITREE "G1"
+Robot Type: Humanoid
+Robot Size: 130 × 45 × 30 cm
+Robot Capabilities:
+- It can move at a maximum speed of 2 m/s.
+- It can traverse rough terrain.
+- It can lift objects up to 2 kg.
+- It can transport objects.
+- It can place objects.
+- It can see.
+- It can converse with people.
+
