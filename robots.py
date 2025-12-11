@@ -152,12 +152,29 @@ def cosine_similarity_matrix(emb: np.ndarray):
 
 def main():
     parser = argparse.ArgumentParser(description="Heterogeneous Multi Robot Task Allocation")
+    parser.add_argument("--dir", type=str, default="robots", help="Directory containing robot .txt files")
+    # parser.add_argument("--out-json", type=str, default="robot_vectors.json", help="Output JSON file")
+    # parser.add_argument("--out-npy", type=str, default="robot_vectors.npy", help="Output numpy .npy file")
     parser.add_argument("--batch", type=int, default=8, help="Batch size for encoding") # 임베딩 시, 한 번에 처리하는 문장 수
     args = parser.parse_args()
 
-    robot4 = ['It can lift objects up to 2 kg.']
-    robot5 = ['It can lift objects up to 11 kg.']
-    task = ['Transport small equipment in mountainous terrain.']
+    dir_path = Path(args.dir)
+    if not dir_path.exists() or not dir_path.is_dir():
+        raise SystemExit(f"Directory not found: {dir_path}")
+
+    robot_files = sorted(dir_path.glob("*.txt"))
+    if not robot_files:
+        raise SystemExit(f"No .txt robot files found in: {dir_path}")
+
+    # robot
+    robots = []
+    for f in robot_files:
+        text = f.read_text(encoding="utf-8")
+        robot = parse_block(text)
+        robots.append(robot)
+    
+    texts_1 = [build_input_text(r, 1) for r in robots]
+    texts_2 = [build_input_text(r, 2) for r in robots]
 
     models = [
         "sentence-transformers/all-mpnet-base-v2",
@@ -179,24 +196,34 @@ def main():
         "sentence-transformers/sentence-t5-large"
     ]
 
+    all_results = {}
+
     for model_name in models:
         # model = load_model(model_name)
         model = load_model_auto(model_name)
-        emb_robot4 = encode(model, robot4, batch_size=args.batch, normalize_output=True)
-        emb_robot5 = encode(model, robot5, batch_size=args.batch, normalize_output=True)
-        emb_task = encode(model, task, batch_size=args.batch, normalize_output=True)
-    
-        # emb_robot: (1, 768)
-        # emb_task: (1, 768)
-        sims1 = np.dot(emb_robot4, emb_task[0])
-        sims2 = np.dot(emb_robot5, emb_task[0])
-        sims3 = np.dot(emb_robot4, emb_robot5[0])
+        emb_robot = encode(model, texts_1, batch_size=args.batch, normalize_output=True)
 
-        print("Similarity results:", model_name)
-        print(f"robot4 & task : {sims1.item():.4f}")
-        print(f"robot5 & task : {sims2.item():.4f}")
-        print(f"robot4 & robot5 : {sims3.item():.4f}")
+        # Optional: print cosine similarity matrix
+        sim = cosine_similarity_matrix(emb_robot)
+        print("Cosine similarity matrix (rounded):")
+        with np.printoptions(precision=3, suppress=True):
+            print(sim)
         print()
+
+
+
+    for model_name in models:
+        # model = load_model(model_name)
+        model = load_model_auto(model_name)
+        emb_robot = encode(model, texts_2, batch_size=args.batch, normalize_output=True)
+
+        # Optional: print cosine similarity matrix
+        sim = cosine_similarity_matrix(emb_robot)
+        print("Cosine similarity matrix (rounded):")
+        with np.printoptions(precision=3, suppress=True):
+            print(sim)
+        print()
+
 
 if __name__ == "__main__":
     main()
