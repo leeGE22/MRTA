@@ -1,0 +1,8 @@
+Robot ID: 3
+Robot Name: DOOSAN Robotics "H2515"
+Robot Type: Manipulator
+Robot Size: 184.5 × 25 × 54 cm
+Robot Capabilities:
+- It can lift objects up to 25 kg.
+- It can move objects up to 1.5 m.
+- It can place objects.

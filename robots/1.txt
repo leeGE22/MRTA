@@ -1,0 +1,8 @@
+Robot ID: 1
+Robot Name: ROAIGN "MyBom Cuty"
+Robot Type: Social Robot
+Robot Size: 25 × 15 × 15 cm
+Robot Capabilities:
+- It can converse with people.
+- It can express emotions.
+- It can perform social interactions.

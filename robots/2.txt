@@ -1,0 +1,7 @@
+Robot ID: 2
+Robot Name: ROBOTIS "GAEMI"
+Robot Type: Mobile Robot
+Robot Size: 73 × 55 × 73.3 cm
+Robot Capabilities:
+- It can move at a maximum speed of 2 m/s.
+- It can carry loads up to 70 kg.

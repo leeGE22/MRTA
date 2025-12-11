@@ -152,46 +152,12 @@ def cosine_similarity_matrix(emb: np.ndarray):
 
 def main():
     parser = argparse.ArgumentParser(description="Heterogeneous Multi Robot Task Allocation")
-    parser.add_argument("--dir", type=str, default="robots", help="Directory containing robot .txt files")
-    # parser.add_argument("--out-json", type=str, default="robot_vectors.json", help="Output JSON file")
-    # parser.add_argument("--out-npy", type=str, default="robot_vectors.npy", help="Output numpy .npy file")
     parser.add_argument("--batch", type=int, default=8, help="Batch size for encoding") # 임베딩 시, 한 번에 처리하는 문장 수
     args = parser.parse_args()
 
-    dir_path = Path(args.dir)
-    if not dir_path.exists() or not dir_path.is_dir():
-        raise SystemExit(f"Directory not found: {dir_path}")
-
-    robot_files = sorted(dir_path.glob("*.txt"))
-    if not robot_files:
-        raise SystemExit(f"No .txt robot files found in: {dir_path}")
-
-    # robot
-    robots = []
-    for f in robot_files:
-        text = f.read_text(encoding="utf-8")
-        robot = parse_block(text)
-        robots.append(robot)
-    
-    texts_1 = [build_input_text(r, 1) for r in robots]
-    texts_2 = [build_input_text(r, 2) for r in robots]
-    # print(texts_1)
-    # print()
-    # print(texts_2)
-    # print()
-    # print(f"Encoding {len(texts)} robots in batches (batch_size={args.batch}) ...")
-    
-    # # task
-    # task = input("Task : ")
-    # task = [task]
+    robot4 = ['It can lift objects up to 2 kg.']
+    robot5 = ['It can lift objects up to 2 kg.']
     task = ['Transport small equipment in mountainous terrain.']
-
-    # models = [
-    #     "sentence-transformers/all-mpnet-base-v2",
-    #     "sentence-transformers/all-MiniLM-L6-v2",
-    #     "intfloat/e5-base-v2",
-    #     "intfloat/e5-large-v2",
-    # ]
 
     models = [
         "sentence-transformers/all-mpnet-base-v2",
@@ -215,10 +181,11 @@ def main():
 
     all_results = {}
 
+    print("ROBOT1 TASK")
     for model_name in models:
         # model = load_model(model_name)
         model = load_model_auto(model_name)
-        emb_robot = encode(model, texts_1, batch_size=args.batch, normalize_output=True)
+        emb_robot = encode(model, robot1, batch_size=args.batch, normalize_output=True)
         emb_task = encode(model, task, batch_size=args.batch, normalize_output=True)
     
         # emb_robot: (N, 768)
@@ -240,12 +207,38 @@ def main():
         print(f"{model_name}: {robots[best_idx]['name']} (score={sims[best_idx]:.4f})")
 
 
-
+    print("ROBOT2 TASK")
     for model_name in models:
         # model = load_model(model_name)
         model = load_model_auto(model_name)
-        emb_robot = encode(model, texts_2, batch_size=args.batch, normalize_output=True)
+        emb_robot = encode(model, robot2, batch_size=args.batch, normalize_output=True)
         emb_task = encode(model, task, batch_size=args.batch, normalize_output=True)
+    
+        # emb_robot: (N, 768)
+        # emb_task: (1, 768)
+        task_vec = emb_task[0]                      # (768,)
+        sims = np.dot(emb_robot, task_vec)          # (N,)
+
+        all_results[model_name] = sims.tolist()
+
+        print("Similarity results:", model_name)
+        for idx, s in enumerate(sims):
+            print(f"  {robots[idx]['name']}: {s:.4f}")
+        print()
+
+    print("\n=== Model Comparison: Best Match per Model ===")
+    for model_name, sims in all_results.items():
+        sims = np.array(sims)
+        best_idx = int(np.argmax(sims))
+        print(f"{model_name}: {robots[best_idx]['name']} (score={sims[best_idx]:.4f})")
+
+
+    print("ROBOT1 ROBOT2")
+    for model_name in models:
+        # model = load_model(model_name)
+        model = load_model_auto(model_name)
+        emb_robot = encode(model, robot1, batch_size=args.batch, normalize_output=True)
+        emb_task = encode(model, robot2, batch_size=args.batch, normalize_output=True)
     
         # emb_robot: (N, 768)
         # emb_task: (1, 768)

@@ -1,0 +1,11 @@
+Robot ID: 4
+Robot Name: Boston Dynamics "Spot"
+Robot Type: 4-legged Robot
+Robot Size: 61 × 11 × 50 cm
+Robot Capabilities:
+- It can move at a maximum speed of 1.6 m/s.
+- It can traverse rough terrain.
+- It can lift objects up to 11 kg.
+- It can transport objects.
+- It can place objects.
+- It can see.

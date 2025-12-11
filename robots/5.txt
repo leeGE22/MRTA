@@ -1,0 +1,12 @@
+Robot ID: 5
+Robot Name: UNITREE "G1"
+Robot Type: Humanoid
+Robot Size: 130 × 45 × 30 cm
+Robot Capabilities:
+- It can move at a maximum speed of 2 m/s.
+- It can traverse rough terrain.
+- It can lift objects up to 2 kg.
+- It can transport objects.
+- It can place objects.
+- It can see.
+- It can converse with people.
